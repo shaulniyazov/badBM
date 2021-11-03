@@ -48,7 +48,7 @@ sourceSets  {
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveName("badbm")
+    archiveName("badbm.jar")
     manifest {
         attributes 'Main-Class': 'edu.touro.mco152.bm.App'
     }
