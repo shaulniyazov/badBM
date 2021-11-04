@@ -37,7 +37,18 @@ import static edu.touro.mco152.bm.DiskMark.MarkType.WRITE;
  * Swing using an instance of the DiskMark class.
  */
 
-public class DiskWorker extends SwingWorker<Boolean, DiskMark> {
+public class DiskWorker  extends SwingWorker<Boolean, DiskMark> {
+    /* TODO
+    make an interface with all these methods that are now red
+    the red shows what now needs to be  worked on
+    change the names of those new methods
+    there will be 2 implementations: swing and a unit test
+    MySwing extends SwingWorker implements NewInterface
+    MySwing will have the same implementation
+    error that could happen: a thread problem
+    MySwing will have a reference to DiskWorker
+         when execute is called, it calls doInBackground, which then needs to call the DiskWorker methods
+     */
 
     @Override
     protected Boolean doInBackground() throws Exception {
