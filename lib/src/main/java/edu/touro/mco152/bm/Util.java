@@ -105,7 +105,8 @@ public class Util {
     }
 
     public static String displayString(double num) {
-        return DF.format(num);
+        //return DF.format(num);
+        return "00.00";
     }
 
     /**
