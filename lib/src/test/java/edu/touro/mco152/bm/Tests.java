@@ -91,7 +91,8 @@ class Tests {
      * the assignment requirements. The displayString()
      * method was changed in order for it to return
      * a generic 00.00 for every value
-     *
+     * edit: no longer does that. see JUnitFirstPass branch
+     * for previous implementation.
      */
 
     @Test
