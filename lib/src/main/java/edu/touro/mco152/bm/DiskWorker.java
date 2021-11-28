@@ -50,6 +50,8 @@ public class DiskWorker  /*extends SwingWorker<Boolean, DiskMark> */{
      */
     UIMethods userInterface;
 
+
+
     DiskWorker(UIMethods userInterface){
         this.userInterface = userInterface;
     }
@@ -90,7 +92,7 @@ public class DiskWorker  /*extends SwingWorker<Boolean, DiskMark> */{
          */
         if (App.writeTest) {
             DiskRun run = getDiskRun(DiskRun.IOMode.WRITE);
-
+            System.out.println(run.getDiskInfo() + " ++++++++++++++++++++++++++++++++++++++++++++");
             // Tell logger and GUI to display what we know so far about the Run
             msg("disk info: (" + run.getDiskInfo() + ")");
 
@@ -238,7 +240,7 @@ public class DiskWorker  /*extends SwingWorker<Boolean, DiskMark> */{
         DiskMark rMark;
         float percentComplete;
         DiskRun run = getDiskRun(DiskRun.IOMode.READ);
-
+        System.out.println(run.getDiskInfo() + " ++++++++++++++++++++++++++++++++++++++++++++");
         msg("disk info: (" + run.getDiskInfo() + ")");
 
         Gui.chartPanel.getChart().getTitle().setVisible(true);
