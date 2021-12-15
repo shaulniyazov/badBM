@@ -1,0 +1,22 @@
+Config for Java Disk Mark 0.4
+readTest: true
+writeTest: false
+locationDir: C:\Users\shaul
+multiFile: true
+autoRemoveData: false
+autoReset: true
+blockSequence: SEQUENTIAL
+showMaxMin: true
+numOfFiles: 25
+numOfBlocks: 32
+blockSizeKb: 512
+
+C:\Users\shaul\jDiskMarkData
+ *** starting new worker thread
+os: Windows 10
+Windows PowerShell
+;Copyright (C) Microsoft Corporation. All rights reserved.
+
+>Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+0  ++++++++++++++++++++++++++++++++++++++++++++

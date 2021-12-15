@@ -262,7 +262,7 @@ public class Util {
         } catch (IOException | InterruptedException e) {
             System.err.println("Exception in getModelFromLetter2: " + e.getMessage());
         }
-        return null;
+        return " ";
     }
 
     /**
