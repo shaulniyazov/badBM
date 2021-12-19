@@ -59,6 +59,9 @@ public class DiskWorker{
     }
 
     protected Boolean makeDiskWorker() throws Exception {
+        Invoker control = new Invoker();
+        CommandInterface write = new WriteCommand(userInterface,numOfBlocks,numOfMarks,blockSizeKb,blockSequence);
+        CommandInterface read = new ReadCommand(userInterface, numOfBlocks, numOfMarks, blockSizeKb, blockSequence);
 
             /*
       We 'got here' because: a) End-user clicked 'Start' on the benchmark UI,
@@ -104,7 +107,11 @@ public class DiskWorker{
         /*
           The GUI allows either a write, read, or both types of BMs to be started. They are done serially.
          */
-        if (App.writeTest) { WriteCommand.writeBm(userInterface); }
+        if (App.writeTest) {
+            //write
+            control.setCommand(write);
+            control.callCommand();
+        }
 
         /*
           Most benchmarking systems will try to do some cleanup in between 2 benchmark operations to
@@ -125,14 +132,16 @@ public class DiskWorker{
 
         // Same as above, just for Read operations instead of Writes.
         if (App.readTest) {
-            ReadCommand readCommand = new ReadCommand(userInterface, numOfBlocks, numOfMarks, blockSizeKb, blockSequence);
-            readCommand.execute();
-           // ReadCommand.readBm(userInterface, numOfBlocks, numOfMarks, blockSizeKb, blockSequence);
+            //read
+            control.setCommand(read);
+            control.callCommand();
         }
 
         App.nextMarkNumber += App.numOfMarks;
+
         return true;
     }
+
 
 
 }
