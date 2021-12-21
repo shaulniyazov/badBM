@@ -20,25 +20,48 @@ import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
 public class ReadCommand implements CommandInterface {
 
     UIMethods userInterface;
-    int numOfBlocks, numOfMarks, blockSize;
+    int numOfBlocks, numOfMarks, blockSizeKB;
     DiskRun.BlockSequence blockSequence;
 
-    ReadCommand(UIMethods userInterface, int numOfBlocks, int numOfMarks, int blockSize, DiskRun.BlockSequence blockSequence){
+    /**
+     *
+     * @param userInterface
+     * @param numOfBlocks
+     * @param numOfMarks
+     * @param blockSizeKB
+     * @param blockSequence
+     * Constructor takes in all these variables that are taken from App. Instead of getting it from App directly, it is passed in.
+     * This allows for the variables to be set in any context chosen
+     */
+    ReadCommand(UIMethods userInterface, int numOfBlocks, int numOfMarks, int blockSizeKB, DiskRun.BlockSequence blockSequence){
         this.userInterface = userInterface;
         this.numOfBlocks = numOfBlocks;
         this.numOfMarks = numOfMarks;
-        this.blockSize = blockSize;
+        this.blockSizeKB = blockSizeKB;
         this.blockSequence = blockSequence;
     }
 
     ReadCommand(){}
 
+    /**
+     * all it does is call the readBm method that does the read.
+     */
     @Override
     public void execute() {
-        readBm(userInterface,numOfBlocks,numOfMarks,blockSize, blockSequence);
+        readBm(userInterface,numOfBlocks,numOfMarks,blockSizeKB, blockSequence);
     }
 
-    public static void readBm(UIMethods userInterface, int numOfBlocks, int numOfMarks, int blockSize, DiskRun.BlockSequence blockSequence){
+    /**
+     *
+     * @param userInterface
+     * @param numOfBlocks
+     * @param numOfMarks
+     * @param blockSizeKB
+     * @param blockSequence
+     * Takes in all the parameters that were defined in the constructor and uses them instead of the variables defined in App
+     * This is the read program from DiskWorker
+     */
+    public void readBm(UIMethods userInterface, int numOfBlocks, int numOfMarks, int blockSizeKB, DiskRun.BlockSequence blockSequence){
         // declare local vars formerly in DiskWorker
 
         int wUnitsComplete = 0,
@@ -50,7 +73,7 @@ public class ReadCommand implements CommandInterface {
         int unitsTotal = wUnitsTotal + rUnitsTotal;
         float percentComplete;
 
-       // int blockSize = blockSizeKb*KILOBYTE;
+        int blockSize = blockSizeKB*KILOBYTE;
         byte [] blockArr = new byte [blockSize];
         for (int b=0; b<blockArr.length; b++) {
             if (b%2==0) {

@@ -1,6 +1,9 @@
 package edu.touro.mco152.bm;
 
+/**
+ * This is the Interface of the Commands used in DiskWorker
+ */
 public interface CommandInterface {
-    //todo https://dzone.com/articles/design-patterns-command
+
     void execute();
 }

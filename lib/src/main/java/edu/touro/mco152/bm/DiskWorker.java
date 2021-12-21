@@ -59,7 +59,7 @@ public class DiskWorker{
     }
 
     protected Boolean makeDiskWorker() throws Exception {
-        Invoker control = new Invoker();
+        Invoker invoker = new Invoker();
         CommandInterface write = new WriteCommand(userInterface,numOfBlocks,numOfMarks,blockSizeKb,blockSequence);
         CommandInterface read = new ReadCommand(userInterface, numOfBlocks, numOfMarks, blockSizeKb, blockSequence);
 
@@ -109,8 +109,8 @@ public class DiskWorker{
          */
         if (App.writeTest) {
             //write
-            control.setCommand(write);
-            control.callCommand();
+            invoker.setCommand(write);
+            invoker.callCommand();
         }
 
         /*
@@ -133,8 +133,8 @@ public class DiskWorker{
         // Same as above, just for Read operations instead of Writes.
         if (App.readTest) {
             //read
-            control.setCommand(read);
-            control.callCommand();
+            invoker.setCommand(read);
+            invoker.callCommand();
         }
 
         App.nextMarkNumber += App.numOfMarks;
