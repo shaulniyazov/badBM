@@ -2,6 +2,8 @@ package edu.touro.mco152.bm;
 
 import edu.touro.mco152.bm.ui.Gui;
 import edu.touro.mco152.bm.ui.MainFrame;
+import org.eclipse.persistence.annotations.CompositeMember;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyChangeListener;
@@ -17,6 +19,7 @@ public class TestUI implements UIMethods{
      *
      * @author lcmcohen
      */
+    @BeforeAll
     private void setupDefaultAsPerProperties()
     {
         /// Do the minimum of what  App.init() would do to allow it to run.
