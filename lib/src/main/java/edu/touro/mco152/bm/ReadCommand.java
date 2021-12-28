@@ -1,5 +1,8 @@
 package edu.touro.mco152.bm;
 
+import edu.touro.mco152.bm.observer.EMObserver;
+import edu.touro.mco152.bm.observer.GUIObserver;
+import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
@@ -9,7 +12,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +46,29 @@ public class ReadCommand implements CommandInterface {
         this.blockSequence = blockSequence;
     }
 
-    ReadCommand(){}
+    //todo diskRun, GUI
+    private List<Observer> observers;
+
+    public ReadCommand() {
+        observers = new ArrayList<>();
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyAllObservers(){
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
 
     /**
      * all it does is call the readBm method that does the read.
@@ -140,11 +167,9 @@ public class ReadCommand implements CommandInterface {
             run.setEndTime(new Date());
         }
 
-        EntityManager em = EM.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(run);
-        em.getTransaction().commit();
+        observers.add(new EMObserver(this,run));
+        observers.add(new GUIObserver(this,run));
 
-        Gui.runPanel.addRun(run);
+        notifyAllObservers();
     }
 }

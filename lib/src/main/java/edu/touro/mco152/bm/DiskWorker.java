@@ -79,12 +79,6 @@ public class DiskWorker{
         /*
           init local vars that keep track of benchmarks, and a large read/write buffer
          */
-        int wUnitsComplete = 0, rUnitsComplete = 0, unitsComplete;
-        int wUnitsTotal = App.writeTest ? numOfBlocks * numOfMarks : 0;
-        int rUnitsTotal = App.readTest ? numOfBlocks * numOfMarks : 0;
-        int unitsTotal = wUnitsTotal + rUnitsTotal;
-        float percentComplete;
-
         int blockSize = blockSizeKb * KILOBYTE;
         byte[] blockArr = new byte[blockSize];
         for (int b = 0; b < blockArr.length; b++) {
@@ -92,8 +86,6 @@ public class DiskWorker{
                 blockArr[b] = (byte) 0xFF;
             }
         }
-
-        DiskMark wMark, rMark; // rMark;  // declare vars that will point to objects used to pass progress to UI
 
         Gui.updateLegend();  // init chart legend info
 

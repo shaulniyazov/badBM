@@ -1,5 +1,7 @@
 package edu.touro.mco152.bm;
 
+import edu.touro.mco152.bm.observer.EMObserver;
+import edu.touro.mco152.bm.observer.GUIObserver;
 import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.persist.EM;
@@ -44,8 +46,29 @@ public class WriteCommand implements CommandInterface{
         this.blockSequence = blockSequence;
     }
 
-   // WriteCommand(){}
+    //todo diskRun, GUI
+    private List<Observer> observers;
 
+    public WriteCommand() {
+        observers = new ArrayList<>();
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyAllObservers(){
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
     /**
      * all it does is call the writeBm method that does the write command.
      */
@@ -177,32 +200,19 @@ public class WriteCommand implements CommandInterface{
             /*
               Persist info about the Write BM Run (e.g. into Derby Database) and add it to a GUI panel
              */
-        EntityManager em = EM.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(run);
-        em.getTransaction().commit();
+//        EntityManager em = EM.getEntityManager();
+//        em.getTransaction().begin();
+//        em.persist(run);
+//        em.getTransaction().commit();
+//
+//        Gui.runPanel.addRun(run);
+        observers.add(new EMObserver(this,run));
+        observers.add(new GUIObserver(this,run));
 
-        Gui.runPanel.addRun(run);
-    }
-//todo diskRun, GUI
-    private List<Observer> observers;
+        notifyAllObservers();
 
-    public WriteCommand() {
-        observers = new ArrayList<Observer>();
-    }
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
     }
 
-    public void unregisterObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    public void notifyAllObservers(){
-        for (Observer observer : observers) {
-            observer.update();
-        }
-    }
 
 
 }
