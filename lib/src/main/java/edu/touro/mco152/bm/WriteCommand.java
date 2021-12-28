@@ -1,5 +1,6 @@
 package edu.touro.mco152.bm;
 
+import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
 import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
@@ -8,7 +9,9 @@ import jakarta.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +44,7 @@ public class WriteCommand implements CommandInterface{
         this.blockSequence = blockSequence;
     }
 
-    WriteCommand(){}
+   // WriteCommand(){}
 
     /**
      * all it does is call the writeBm method that does the write command.
@@ -180,6 +183,25 @@ public class WriteCommand implements CommandInterface{
         em.getTransaction().commit();
 
         Gui.runPanel.addRun(run);
+    }
+//todo diskRun, GUI
+    private List<Observer> observers;
+
+    public WriteCommand() {
+        observers = new ArrayList<Observer>();
+    }
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyAllObservers(){
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 
 
