@@ -1,12 +1,8 @@
 package edu.touro.mco152.bm;
 
-import edu.touro.mco152.bm.observer.EMObserver;
-import edu.touro.mco152.bm.observer.GUIObserver;
 import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
-import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
-import jakarta.persistence.EntityManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +23,8 @@ public class WriteCommand implements CommandInterface{
     UIMethods userInterface;
     int numOfBlocks, numOfMarks, blockSizeKB;
     DiskRun.BlockSequence blockSequence;
+    //todo diskRun, GUI
+    private List<Observer> observers;
 
     /**
      *
@@ -44,10 +42,8 @@ public class WriteCommand implements CommandInterface{
         this.numOfMarks = numOfMarks;
         this.blockSizeKB = blockSizeKB;
         this.blockSequence = blockSequence;
+        observers = new ArrayList<>();
     }
-
-    //todo diskRun, GUI
-    private List<Observer> observers;
 
     public WriteCommand() {
         observers = new ArrayList<>();
@@ -64,9 +60,9 @@ public class WriteCommand implements CommandInterface{
     }
 
     @Override
-    public void notifyAllObservers(){
+    public void notifyAllObservers(DiskRun diskRun){
         for (Observer observer : observers) {
-            observer.update();
+            observer.update(diskRun);
         }
     }
     /**
@@ -200,16 +196,7 @@ public class WriteCommand implements CommandInterface{
             /*
               Persist info about the Write BM Run (e.g. into Derby Database) and add it to a GUI panel
              */
-//        EntityManager em = EM.getEntityManager();
-//        em.getTransaction().begin();
-//        em.persist(run);
-//        em.getTransaction().commit();
-//
-//        Gui.runPanel.addRun(run);
-        observers.add(new EMObserver(this,run));
-        observers.add(new GUIObserver(this,run));
-
-        notifyAllObservers();
+        notifyAllObservers(run);
 
     }
 

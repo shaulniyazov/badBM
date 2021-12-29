@@ -1,22 +1,19 @@
 package edu.touro.mco152.bm;
 
-import edu.touro.mco152.bm.observer.EMObserver;
-import edu.touro.mco152.bm.observer.GUIObserver;
+
 import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
-import edu.touro.mco152.bm.persist.EM;
+
 import edu.touro.mco152.bm.ui.Gui;
-import jakarta.persistence.EntityManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import static edu.touro.mco152.bm.App.*;
 import static edu.touro.mco152.bm.App.msg;
@@ -27,6 +24,8 @@ public class ReadCommand implements CommandInterface {
     UIMethods userInterface;
     int numOfBlocks, numOfMarks, blockSizeKB;
     DiskRun.BlockSequence blockSequence;
+    //todo diskRun, GUI
+    private List<Observer> observers;
 
     /**
      *
@@ -44,11 +43,8 @@ public class ReadCommand implements CommandInterface {
         this.numOfMarks = numOfMarks;
         this.blockSizeKB = blockSizeKB;
         this.blockSequence = blockSequence;
+        observers = new ArrayList<>();
     }
-
-    //todo diskRun, GUI
-    private List<Observer> observers;
-
     public ReadCommand() {
         observers = new ArrayList<>();
     }
@@ -64,9 +60,9 @@ public class ReadCommand implements CommandInterface {
     }
 
     @Override
-    public void notifyAllObservers(){
+    public void notifyAllObservers(DiskRun diskRun){
         for (Observer observer : observers) {
-            observer.update();
+            observer.update(diskRun);
         }
     }
 
@@ -167,9 +163,7 @@ public class ReadCommand implements CommandInterface {
             run.setEndTime(new Date());
         }
 
-        observers.add(new EMObserver(this,run));
-        observers.add(new GUIObserver(this,run));
-
-        notifyAllObservers();
+        notifyAllObservers(run);
     }
+
 }

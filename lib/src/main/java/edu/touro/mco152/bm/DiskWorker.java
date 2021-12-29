@@ -1,22 +1,11 @@
 package edu.touro.mco152.bm;
 
-import edu.touro.mco152.bm.persist.DiskRun;
-import edu.touro.mco152.bm.persist.EM;
+import edu.touro.mco152.bm.observer.EMObserver;
+
+import edu.touro.mco152.bm.observer.SlackManager;
 import edu.touro.mco152.bm.ui.Gui;
-
-import jakarta.persistence.EntityManager;
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import static edu.touro.mco152.bm.App.*;
-import static edu.touro.mco152.bm.DiskMark.MarkType.READ;
-import static edu.touro.mco152.bm.DiskMark.MarkType.WRITE;
 
 /**
  * Run the disk benchmarking as a Swing-compliant thread (only one of these threads can run at
@@ -62,6 +51,16 @@ public class DiskWorker{
         Invoker invoker = new Invoker();
         CommandInterface write = new WriteCommand(userInterface,numOfBlocks,numOfMarks,blockSizeKb,blockSequence);
         CommandInterface read = new ReadCommand(userInterface, numOfBlocks, numOfMarks, blockSizeKb, blockSequence);
+
+        write.registerObserver(new EMObserver());
+        write.registerObserver(new Gui());
+        //write.registerObserver(new SlackManager("BadBM"));
+
+        read.registerObserver(new EMObserver());
+        read.registerObserver(new Gui());
+        //read.registerObserver(new SlackManager("BadBM"));
+        //read slack observer
+//the client is the one that registers the observers to the subject
 
             /*
       We 'got here' because: a) End-user clicked 'Start' on the benchmark UI,

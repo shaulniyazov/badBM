@@ -5,6 +5,7 @@ import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.slack.api.methods.response.api.ApiTestResponse;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
+import edu.touro.mco152.bm.persist.DiskRun;
 
 import java.io.*;
 import java.util.logging.*;
@@ -16,7 +17,7 @@ import java.util.logging.*;
  * SlackManager slackmgr = new SlackManager("myAppName");
  * Boolean worked = slackmgr.postMsg2OurChannel(":smile: Benchmark completed");
  */
-public class SlackManager {
+public class SlackManager implements Observer{
     private static Logger log = Logger.getLogger("SlackManager");
     private static Slack slack = null;  // obtain/keep one copy of expensive item
 
@@ -119,4 +120,8 @@ public class SlackManager {
         return token;   // may be actual token or dummy string
     }
 
+    @Override
+    public void update(DiskRun diskRun) {
+        this.postMsg2OurChannel(":partying_face: Benchmark completed");
+    }
 }

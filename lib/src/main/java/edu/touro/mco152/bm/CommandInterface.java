@@ -1,6 +1,7 @@
 package edu.touro.mco152.bm;
 
 import edu.touro.mco152.bm.observer.Observer;
+import edu.touro.mco152.bm.persist.DiskRun;
 
 /**
  * This is the Interface of the Commands used in DiskWorker
@@ -13,5 +14,5 @@ public interface CommandInterface {
 
     public void unregisterObserver(Observer observer);
 
-    public void notifyAllObservers();
+    public void notifyAllObservers(DiskRun diskRun);
 }
