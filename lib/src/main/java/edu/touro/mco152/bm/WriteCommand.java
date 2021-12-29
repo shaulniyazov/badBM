@@ -1,14 +1,15 @@
 package edu.touro.mco152.bm;
 
+import edu.touro.mco152.bm.observer.Observer;
 import edu.touro.mco152.bm.persist.DiskRun;
-import edu.touro.mco152.bm.persist.EM;
 import edu.touro.mco152.bm.ui.Gui;
-import jakarta.persistence.EntityManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +23,8 @@ public class WriteCommand implements CommandInterface{
     UIMethods userInterface;
     int numOfBlocks, numOfMarks, blockSizeKB;
     DiskRun.BlockSequence blockSequence;
+    //todo diskRun, GUI
+    private List<Observer> observers;
 
     /**
      *
@@ -39,10 +42,29 @@ public class WriteCommand implements CommandInterface{
         this.numOfMarks = numOfMarks;
         this.blockSizeKB = blockSizeKB;
         this.blockSequence = blockSequence;
+        observers = new ArrayList<>();
     }
 
-    WriteCommand(){}
+    public WriteCommand() {
+        observers = new ArrayList<>();
+    }
 
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyAllObservers(DiskRun diskRun){
+        for (Observer observer : observers) {
+            observer.update(diskRun);
+        }
+    }
     /**
      * all it does is call the writeBm method that does the write command.
      */
@@ -174,13 +196,10 @@ public class WriteCommand implements CommandInterface{
             /*
               Persist info about the Write BM Run (e.g. into Derby Database) and add it to a GUI panel
              */
-        EntityManager em = EM.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(run);
-        em.getTransaction().commit();
+        notifyAllObservers(run);
 
-        Gui.runPanel.addRun(run);
     }
+
 
 
 }
