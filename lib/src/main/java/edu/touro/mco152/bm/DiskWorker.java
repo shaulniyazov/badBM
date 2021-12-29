@@ -54,7 +54,7 @@ public class DiskWorker{
 
         write.registerObserver(new EMObserver());
         write.registerObserver(new Gui());
-        //write.registerObserver(new SlackManager("BadBM"));
+        write.registerObserver(new SlackManager("BadBM"));
 
         read.registerObserver(new EMObserver());
         read.registerObserver(new Gui());

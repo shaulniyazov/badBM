@@ -122,6 +122,12 @@ public class SlackManager implements Observer{
 
     @Override
     public void update(DiskRun diskRun) {
-        this.postMsg2OurChannel(":partying_face: Benchmark completed");
+        double threePercentOver = diskRun.getRunAvg() + (diskRun.getRunAvg() * 0.03);
+        //postMsg2OurChannel(":partying_face: Benchmark completed");
+        if( diskRun.getRunMax() > threePercentOver && (diskRun.getIoMode().equals(DiskRun.IOMode.READ) ) ){
+            this.postMsg2OurChannel(":face_with_head_bandage: Read benchmark went over 3% the average run time");
+
+        }
+
     }
 }

@@ -20,6 +20,7 @@ import java.text.NumberFormat;
 
 /**
  * Store gui references for easy access
+ * also made it implement observer in order for it to perform the necessary processes needed
  */
 public final class Gui implements Observer {
 
@@ -142,6 +143,10 @@ public final class Gui implements Observer {
         chart.getXYPlot().getRenderer().setSeriesVisibleInLegend(7, App.readTest && App.showMaxMin);
     }
 
+    /**
+     * This is the overridden method from Observer
+     * @param diskRun
+     */
     @Override
     public void update(DiskRun diskRun) {
         runPanel.addRun(diskRun);
